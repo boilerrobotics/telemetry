@@ -1,31 +1,43 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { IMqttMessage, MqttService } from "ngx-mqtt";
 import { Subscription } from "rxjs";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, CommonModule],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   private _title = "Boiler Robotics";
   private subscription$!: Subscription;
   public message!: string;
   public topic: string = "purdue-brc/#";
-
-  // Need to use onConnect and onDisconnent to check connection status
+  public connectionStatus: string = "connecting";
 
   constructor(private _mqttService: MqttService, private _titleService: Title) {
     this._titleService.setTitle(this._title);
   }
 
   ngOnInit(): void {
-    this.changeTopic();
+    this._mqttService.onConnect.subscribe((message) => {
+      if (message.cmd == "connack") {
+        console.log(`connack received`);
+        this.changeTopic();
+      }
+    });
+
+    this._mqttService.onSuback.subscribe((message) => {
+      if (message.granted) {
+        this.connectionStatus = "connected";
+        console.log(`Subscribed to ${message.filter}`);
+      }
+    });
   }
 
   changeTopic(): void {

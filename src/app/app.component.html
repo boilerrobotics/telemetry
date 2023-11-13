@@ -1,4 +1,7 @@
-<input type="text" [(ngModel)]="topic" />
-<button (click)="changeTopic()">Subscribe</button>
+<p>Connection status = {{ connectionStatus | titlecase }}</p>
+<div>
+  <input type="text" [(ngModel)]="topic" />
+  <button (click)="changeTopic()">Subscribe</button>
+</div>
 <p>{{ message }}</p>
 <router-outlet></router-outlet>
