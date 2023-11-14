@@ -1,9 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { IMqttMessage } from "ngx-mqtt";
-import { Observable } from "rxjs";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { CommonModule } from "@angular/common";
 import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
 import { MqttDebugComponent } from "./mqtt-debug.component";
 import { ManageMqttService } from "./manage-mqtt.service";
@@ -16,17 +13,12 @@ import { ManageMqttService } from "./manage-mqtt.service";
   providers: [provideEcharts()],
   imports: [
     RouterOutlet,
-    CommonModule,
     NgxEchartsDirective,
     MqttDebugComponent,
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private _title = "Boiler Robotics";
-  private _topic = "purdue-dac/#";
-
-  public mqtt$?: Observable<IMqttMessage>;
-  public connectionStatus: string = "connecting";
 
   constructor(
     private _mqttService: ManageMqttService,
@@ -36,10 +28,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.mqtt$ = this._mqttService.initConnection(this._topic);
+    this._mqttService.initConnection();
   }
 
   ngOnDestroy(): void {
-    this._mqttService.unSubscription();
+    this._mqttService.tearDown();
   }
 }

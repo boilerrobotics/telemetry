@@ -12,7 +12,7 @@ export class ManageMqttService {
 
   constructor(private _mqttService: MqttService) {}
 
-  initConnection(topic: string): Observable<IMqttMessage> {
+  initConnection(): void {
     this._onConnectSubscription = this._mqttService.onConnect.subscribe(
       (message) => {
         if (message.cmd == "connack") {
@@ -26,14 +26,15 @@ export class ManageMqttService {
         console.log(`Subscribed to ${this._currentTopic}`);
       }
     });
-    return this._mqttService.observe(topic);
   }
 
-  extractPayload(rawMessage: IMqttMessage): string {
+  extractPayload(rawMessage: IMqttMessage, debug: boolean = false): string {
     let message = `Received ${rawMessage.payload.toString()} from topic ${
       rawMessage.topic
     }`;
-    console.log(message);
+    if (debug) {
+      console.log(message);
+    }
     return message;
   }
 
@@ -42,11 +43,7 @@ export class ManageMqttService {
     return this._mqttService.observe(topic);
   }
 
-  getTopic(): string {
-    return this._currentTopic;
-  }
-
-  unSubscription(): void {
+  tearDown(): void {
     this._onConnectSubscription?.unsubscribe();
     this._onSubackSubscription?.unsubscribe();
   }
