@@ -1,68 +1,45 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { IMqttMessage, MqttService } from "ngx-mqtt";
-import { Subscription } from "rxjs";
+import { IMqttMessage } from "ngx-mqtt";
+import { Observable } from "rxjs";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
+import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
+import { MqttDebugComponent } from "./mqtt-debug.component";
+import { ManageMqttService } from "./manage-mqtt.service";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule],
+  providers: [provideEcharts()],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    NgxEchartsDirective,
+    MqttDebugComponent,
+  ],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private _title = "Boiler Robotics";
-  private subscription$!: Subscription;
-  public message!: string;
-  public topic: string = "purdue-brc/#";
+  private _topic = "purdue-dac/#";
+
+  public mqtt$?: Observable<IMqttMessage>;
   public connectionStatus: string = "connecting";
 
-  constructor(private _mqttService: MqttService, private _titleService: Title) {
+  constructor(
+    private _mqttService: ManageMqttService,
+    private _titleService: Title
+  ) {
     this._titleService.setTitle(this._title);
   }
 
   ngOnInit(): void {
-    this._mqttService.onConnect.subscribe((message) => {
-      if (message.cmd == "connack") {
-        console.log(`connack received`);
-        this.changeTopic();
-      }
-    });
-
-    this._mqttService.onSuback.subscribe((message) => {
-      if (message.granted) {
-        this.connectionStatus = "connected";
-        console.log(`Subscribed to ${message.filter}`);
-      }
-    });
-  }
-
-  changeTopic(): void {
-    if (this.subscription$) {
-      this.subscription$.unsubscribe();
-    }
-
-    this.subscription$ = this._mqttService
-      .observe(this.topic)
-      .subscribe((message: IMqttMessage) => {
-        this.extractPayload(message);
-      });
-
-    console.log(`Subscribing to ${this.topic} ...`);
-  }
-
-  extractPayload(message: IMqttMessage): void {
-    this.message = `Received ${message.payload.toString()} from topic ${
-      message.topic
-    }`;
-
-    console.log(this.message);
+    this.mqtt$ = this._mqttService.initConnection(this._topic);
   }
 
   ngOnDestroy(): void {
-    this.subscription$.unsubscribe();
+    this._mqttService.unSubscription();
   }
 }

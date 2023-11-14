@@ -1,7 +1,3 @@
 <p>Connection status = {{ connectionStatus | titlecase }}</p>
-<div>
-  <input type="text" [(ngModel)]="topic" />
-  <button (click)="changeTopic()">Subscribe</button>
-</div>
-<p>{{ message }}</p>
+<app-mqtt-debug [mqtt$]="mqtt$"></app-mqtt-debug>
 <router-outlet></router-outlet>
