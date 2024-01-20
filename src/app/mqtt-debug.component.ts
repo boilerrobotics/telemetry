@@ -9,8 +9,14 @@ import { FormsModule } from "@angular/forms";
   imports: [FormsModule],
   template: `
     <div class="space-x-4">
-      Topic <input class="border-black border-2" type="text" [(ngModel)]="topic" />
-      <button class="border-rose-500 border-2 rounded-full px-2" (click)="changeTopic()">Subscribe</button>
+      Topic
+      <input class="border-black border-2" type="text" [(ngModel)]="topic" />
+      <button
+        class="border-rose-500 border-2 rounded-full px-2"
+        (click)="changeTopic()"
+      >
+        Subscribe
+      </button>
     </div>
     <p class="text-xl">{{ message }}</p>
   `,
