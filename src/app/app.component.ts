@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
+import mqtt from "mqtt";
 import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
-import { MqttDebugComponent } from "./mqtt-debug.component";
-import { ManageMqttService } from "./manage-mqtt.service";
 
 @Component({
   selector: "app-root",
@@ -11,27 +10,27 @@ import { ManageMqttService } from "./manage-mqtt.service";
   styleUrls: ["./app.component.css"],
   standalone: true,
   providers: [provideEcharts()],
-  imports: [
-    RouterOutlet,
-    NgxEchartsDirective,
-    MqttDebugComponent,
-  ],
+  imports: [RouterOutlet, NgxEchartsDirective],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  private _title = "Boiler Robotics";
+export class AppComponent implements OnInit {
+  private _title = "Boiler Robotics Telemetry";
 
-  constructor(
-    private _mqttService: ManageMqttService,
-    private _titleService: Title
-  ) {
-    this._titleService.setTitle(this._title);
-  }
+  constructor(private _titleService: Title) {}
 
   ngOnInit(): void {
-    this._mqttService.initConnection();
-  }
-
-  ngOnDestroy(): void {
-    this._mqttService.tearDown();
+    this._titleService.setTitle(this._title);
+    const host = "ws://66.253.158.154:9001";
+    console.log("connecting mqtt client");
+    const client = mqtt.connect(host);
+    console.log(client);
+    client.on("connect", () => {
+      console.log("client connected:");
+      client.subscribe("purdue-dac/#");
+    });
+    client.on("message", (topic, message, packet) => {
+      console.log(
+        "Received Message:= " + message.toString() + "\nOn topic:= " + topic
+      );
+    });
   }
 }
