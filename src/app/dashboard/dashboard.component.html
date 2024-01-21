@@ -1,0 +1,4 @@
+@if (mqttMessage$ | async; as message){
+<div>{{ message.message }}</div>
+<div>{{ message.topic }}</div>
+}
