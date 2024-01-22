@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ManageMqttService } from './manage-mqtt.service';
+import { MqttService } from './mqtt.service';
 
-describe('ManageMqttService', () => {
-  let service: ManageMqttService;
+describe('MqttService', () => {
+  let service: MqttService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ManageMqttService);
+    service = TestBed.inject(MqttService);
   });
 
   it('should be created', () => {

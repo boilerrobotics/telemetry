@@ -1,9 +1,7 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
-import { MqttDebugComponent } from "./mqtt-debug.component";
-import { ManageMqttService } from "./manage-mqtt.service";
 
 @Component({
   selector: "app-root",
@@ -11,27 +9,14 @@ import { ManageMqttService } from "./manage-mqtt.service";
   styleUrls: ["./app.component.css"],
   standalone: true,
   providers: [provideEcharts()],
-  imports: [
-    RouterOutlet,
-    NgxEchartsDirective,
-    MqttDebugComponent,
-  ],
+  imports: [RouterOutlet, NgxEchartsDirective],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  private _title = "Boiler Robotics";
+export class AppComponent {
+  private _title = "Boiler Robotics Telemetry";
 
-  constructor(
-    private _mqttService: ManageMqttService,
-    private _titleService: Title
-  ) {
-    this._titleService.setTitle(this._title);
-  }
+  constructor(private _titleService: Title) {}
 
   ngOnInit(): void {
-    this._mqttService.initConnection();
-  }
-
-  ngOnDestroy(): void {
-    this._mqttService.tearDown();
+    this._titleService.setTitle(this._title);
   }
 }
