@@ -22,15 +22,14 @@ export class MqttService {
 
   subscribe(topic: string | string[]): Observable<MqttPayload> {
     this.client.subscribe(topic, (err, granted) => {
-      console.log(`Subscribed to ${granted}`);
     });
 
     return new Observable<MqttPayload>((observer) => {
       this.client.on("message", (topic, message, packet) => {
-        console.log(packet);
         observer.next({
           message: message.toString(),
           topic: topic,
+          packet: packet,
         });
       });
     });

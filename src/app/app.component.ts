@@ -1,7 +1,9 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
+import { MatSidenavModule } from "@angular/material/sidenav";
 import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
+import { NavbarComponent } from "./navbar/navbar.component";
 
 @Component({
   selector: "app-root",
@@ -9,7 +11,12 @@ import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
   styleUrls: ["./app.component.css"],
   standalone: true,
   providers: [provideEcharts()],
-  imports: [RouterOutlet, NgxEchartsDirective],
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    NgxEchartsDirective,
+    NavbarComponent,
+  ],
 })
 export class AppComponent {
   private _title = "Boiler Robotics Telemetry";
