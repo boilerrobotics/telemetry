@@ -1,1 +1,25 @@
-<p>navbar works!</p>
+<div class="grid grid-cols-1 gap-3 m-3">
+  <button
+    routerLink="/dashboard"
+    routerLinkActive="active"
+    #dashboardLink="routerLinkActive"
+    ariaCurrentWhenActive="page"
+    mat-raised-button
+    color="{{ dashboardLink.isActive ? 'primary' : 'accent' }}"
+  >
+    Dashboard
+  </button>
+
+  <mat-divider></mat-divider>
+
+  <button
+    routerLink="/mqtt"
+    routerLinkActive="active"
+    #mqttLink="routerLinkActive"
+    ariaCurrentWhenActive="page"
+    mat-raised-button
+    color="{{ mqttLink.isActive ? 'primary' : 'accent' }}"
+  >
+    MQTT Config
+  </button>
+</div>
