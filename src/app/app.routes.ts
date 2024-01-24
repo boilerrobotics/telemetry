@@ -5,6 +5,7 @@ export const routes: Routes = [
   {
     path: "",
     component: DashboardComponent,
+    title: "Boiler Robotics Telemetry Dashboard",
   },
   {
     path: "**",

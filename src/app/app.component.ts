@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { Title } from "@angular/platform-browser";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { NgxEchartsDirective, provideEcharts } from "ngx-echarts";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -19,11 +18,7 @@ import { NavbarComponent } from "./navbar/navbar.component";
   ],
 })
 export class AppComponent {
-  private _title = "Boiler Robotics Telemetry";
+  constructor() {}
 
-  constructor(private _titleService: Title) {}
-
-  ngOnInit(): void {
-    this._titleService.setTitle(this._title);
-  }
+  ngOnInit(): void {}
 }
