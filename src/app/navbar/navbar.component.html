@@ -1,7 +1,14 @@
-<div class="grid grid-cols-1 gap-3 m-3">
+<div class="w-24 hover:w-64 grid grid-cols-1 hover:gap-3 m-1 hover:m-3 ">
+  <mat-card class="logo">
+    <mat-card-header class="justify-center"
+      >Boiler Robotic Club</mat-card-header
+    >
+    <img src="/assets/logo.webp" />
+  </mat-card>
+
   <button
     routerLink="/dashboard"
-    routerLinkActive="active"
+    routerLinkActive="active-link"
     #dashboardLink="routerLinkActive"
     ariaCurrentWhenActive="page"
     mat-raised-button
@@ -14,7 +21,7 @@
 
   <button
     routerLink="/mqtt"
-    routerLinkActive="active"
+    routerLinkActive="active-link"
     #mqttLink="routerLinkActive"
     ariaCurrentWhenActive="page"
     mat-raised-button

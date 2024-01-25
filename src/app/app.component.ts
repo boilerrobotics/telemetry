@@ -18,7 +18,13 @@ import { NavbarComponent } from "./navbar/navbar.component";
   ],
 })
 export class AppComponent {
+
   constructor() {}
 
-  ngOnInit(): void {}
+  mouseEnter() {
+    console.log("enter");
+  }
+  mouseOut() {
+    console.log("exit");
+  }
 }

@@ -1,3 +1,7 @@
-.active {
+.active-link {
   font-weight: bold;
+}
+
+.logo {
+  max-width: 480px;
 }
