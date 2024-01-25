@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: "app-navbar",
@@ -13,9 +13,11 @@ import {MatCardModule} from '@angular/material/card';
     RouterLinkActive,
     MatButtonModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
   ],
   templateUrl: "./navbar.component.html",
   styleUrl: "./navbar.component.css",
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  readonly isHover = signal(false);
+}

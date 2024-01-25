@@ -17,14 +17,4 @@ import { NavbarComponent } from "./navbar/navbar.component";
     NavbarComponent,
   ],
 })
-export class AppComponent {
-
-  constructor() {}
-
-  mouseEnter() {
-    console.log("enter");
-  }
-  mouseOut() {
-    console.log("exit");
-  }
-}
+export class AppComponent {}

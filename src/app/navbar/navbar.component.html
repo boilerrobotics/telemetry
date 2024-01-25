@@ -1,8 +1,14 @@
-<div class="w-24 hover:w-64 grid grid-cols-1 hover:gap-3 m-1 hover:m-3 ">
+<div
+  class="w-24 hover:w-64 grid grid-cols-1 gap-y-1 hover:gap-3 m-1 hover:m-3"
+  (mouseenter)="this.isHover.set(true)"
+  (mouseleave)="this.isHover.set(false)"
+>
   <mat-card class="logo">
-    <mat-card-header class="justify-center"
+    @if (this.isHover()) {
+    <mat-card-header class="justify-center font-bold"
       >Boiler Robotic Club</mat-card-header
     >
+    }
     <img src="/assets/logo.webp" />
   </mat-card>
 
