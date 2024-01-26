@@ -5,5 +5,8 @@
   text-align: center;
 }
 .mat-column-qos {
-    text-align: center;
-  }
+  text-align: center;
+}
+.mat-column-timestamp {
+  text-align: center;
+}

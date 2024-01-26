@@ -1,6 +1,13 @@
 <div class="flex justify-center">
-  <div class="w-1/2">
-    <table mat-table [dataSource]="dataSource()">
+  <div class="flex-grow">
+    <table mat-table [dataSource]="messages()">
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.timestamp | date : "medium" }}
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="topic">
         <th mat-header-cell *matHeaderCellDef>Topic</th>
         <td mat-cell *matCellDef="let row">{{ row.topic }}</td>
