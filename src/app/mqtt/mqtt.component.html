@@ -1,9 +1,27 @@
 <div class="flex justify-center">
-  <div class="w-96"><p>mqtt works!</p></div>
-  <div class="w-96"><p>mqtt works!</p></div>
-  <div class="flex-2"><p>mqtt works!</p></div>
-  <div class="flex-none">
-    <div class=""><p>mqtt works!</p></div>
-    <div class=""><p>mqtt works!</p></div>
+  <div class="w-1/2">
+    <table mat-table [dataSource]="dataSource()">
+      <ng-container matColumnDef="topic">
+        <th mat-header-cell *matHeaderCellDef>Topic</th>
+        <td mat-cell *matCellDef="let row">{{ row.topic }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef>Message</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.message }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="qos">
+        <th mat-header-cell *matHeaderCellDef>QoS</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.packet?.qos }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
   </div>
 </div>

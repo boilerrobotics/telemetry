@@ -19,5 +19,5 @@ import { MatCardModule } from "@angular/material/card";
   styleUrl: "./navbar.component.css",
 })
 export class NavbarComponent {
-  readonly isHover = signal(false);
+  public isHover = signal(false);
 }
