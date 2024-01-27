@@ -1,5 +1,37 @@
-<div class="flex justify-center">
-  <div class="flex-grow">
+<div class="flex flex-col justify-center">
+  <div class="flex justify-evenly">
+    <div class="w-48 flex-none flex flex-col justify-center gap-2">
+      <span class="text-center">Broker Connection Status</span>
+      <div class="flex justify-around">
+        <mat-icon
+          class="text-center"
+          aria-hidden="false"
+          fontIcon="{{ connectionStatus ? 'sync' : 'error' }}"
+        ></mat-icon>
+        <span>@if (connectionStatus) {Connected} @else {Connecting}</span>
+        <mat-icon
+          class="text-center"
+          aria-hidden="false"
+          fontIcon="{{ connectionStatus ? 'sync' : 'error' }}"
+        ></mat-icon>
+      </div>
+    </div>
+
+    <div class="">
+      <form>
+        <mat-form-field>
+          <mat-label>Broker URL</mat-label>
+          <input matInput placeholder="Ex. Pizza" value="Sushi" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Broker port</mat-label>
+          <input matInput placeholder="Ex. Pizza" value="Sushi" />
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+
+  <div class="grow">
     <table mat-table [dataSource]="messages()">
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef>Timestamp</th>

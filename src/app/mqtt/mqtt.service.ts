@@ -11,11 +11,11 @@ export class MqttService {
 
   constructor() {}
 
-  connect(hostUrl: string, port: Number): Promise<string> {
+  connect(hostUrl: string, port: Number): Promise<boolean> {
     this.client = mqtt.connect(`ws://${hostUrl}:${port}`);
-    return new Promise<string>((resolve) => {
+    return new Promise<boolean>((resolve) => {
       this.client.on("connect", () => {
-        resolve("Connected!");
+        resolve(true);
       });
     });
   }
