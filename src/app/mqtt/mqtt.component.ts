@@ -1,11 +1,14 @@
 import { Component, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Subscription } from "rxjs";
+import { environment } from "src/environments/environment";
 import { MatTableModule } from "@angular/material/table";
 import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
+import { MatCardModule } from "@angular/material/card";
+import { MatButtonModule } from "@angular/material/button";
 
 import { MqttPayload } from "./mqtt.interface";
 import { MqttService } from "./mqtt.service";
@@ -20,6 +23,8 @@ import { MqttService } from "./mqtt.service";
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   templateUrl: "./mqtt.component.html",
   styleUrl: "./mqtt.component.css",
@@ -29,6 +34,9 @@ export class MqttComponent {
   public connectionStatus: boolean = false;
   public columnsToDisplay: string[] = ["timestamp", "topic", "message", "qos"];
   public messages = signal<MqttPayload[]>([{ message: "", topic: "" }]);
+  public brokerUrl = environment.brokerUrl;
+  public brokerPort = environment.brokerPort;
+  public CurrentTopic = environment.defaultTopic;
 
   constructor(private _mqttService: MqttService) {}
 
@@ -46,6 +54,10 @@ export class MqttComponent {
             .slice(0, 10);
         });
       });
+  }
+
+  connect() {
+    console.log(this.brokerPort);
   }
 
   ngOndestroy() {
