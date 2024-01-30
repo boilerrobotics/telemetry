@@ -7,12 +7,14 @@
           class="text-center"
           aria-hidden="false"
           fontIcon="{{ connectionStatus ? 'sync' : 'error' }}"
+          color="{{ connectionStatus ? 'accent' : 'warn' }}"
         ></mat-icon>
         <span>@if (connectionStatus) {Connected} @else {Connecting}</span>
         <mat-icon
           class="text-center"
           aria-hidden="false"
           fontIcon="{{ connectionStatus ? 'sync' : 'error' }}"
+          color="{{ connectionStatus ? 'accent' : 'warn' }}"
         ></mat-icon>
       </div>
     </div>
@@ -32,6 +34,7 @@
                   #url="ngModel"
                   required
                 />
+                <mat-error>This field is required</mat-error>
               </mat-form-field>
             </div>
 
@@ -46,6 +49,7 @@
                   #port="ngModel"
                   required
                 />
+                <mat-error>This field is required</mat-error>
               </mat-form-field>
             </div>
 
@@ -60,10 +64,11 @@
                   #topic="ngModel"
                   required
                 />
+                <mat-error>This field is required</mat-error>
               </mat-form-field>
             </div>
 
-            <div class="align-middle">
+            <div class="flex items-center">
               <button mat-raised-button color="primary" (click)="connect()">
                 @if (connectionStatus) {Reconnect} @else {Connect}
               </button>
