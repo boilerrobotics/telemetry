@@ -1,4 +1,5 @@
 <div class="flex flex-col justify-center">
+  <!-- connection status -->
   <div class="flex justify-evenly m-1">
     <div class="w-48 flex-none flex flex-col justify-center gap-2">
       <span class="text-center">Broker Connection Status</span>
@@ -18,58 +19,45 @@
         ></mat-icon>
       </div>
     </div>
-
-    <form>
+    <!-- connection form -->
+    <form [formGroup]="mqttInfoForm" (ngSubmit)="connect()">
       <mat-card>
         <mat-card-content>
           <div class="flex flex-row flex-wrap justify-center gap-2">
-            <div>
-              <mat-form-field>
-                <mat-label>Broker URL</mat-label>
-                <input
-                  matInput
-                  placeholder="Ex. 10.0.0.15"
-                  [(ngModel)]="brokerUrl"
-                  name="url"
-                  #url="ngModel"
-                  required
-                />
-                <mat-error>This field is required</mat-error>
-              </mat-form-field>
-            </div>
+            <mat-form-field>
+              <mat-label>Broker URL</mat-label>
+              <input
+                matInput
+                placeholder="Ex. 10.0.0.15"
+                formControlName="brokerUrl"
+              />
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
 
-            <div>
-              <mat-form-field>
-                <mat-label>Broker port</mat-label>
-                <input
-                  matInput
-                  placeholder="Ex. 1883"
-                  [(ngModel)]="brokerPort"
-                  name="port"
-                  #port="ngModel"
-                  required
-                />
-                <mat-error>This field is required</mat-error>
-              </mat-form-field>
-            </div>
+            <mat-form-field>
+              <mat-label>Broker port</mat-label>
+              <input
+                matInput
+                type="number"
+                placeholder="Ex. 1883"
+                formControlName="brokerPort"
+              />
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
 
-            <div>
-              <mat-form-field>
-                <mat-label>Topic</mat-label>
-                <input
-                  matInput
-                  placeholder="Ex. brc/#"
-                  [(ngModel)]="CurrentTopic"
-                  name="topic"
-                  #topic="ngModel"
-                  required
-                />
-                <mat-error>This field is required</mat-error>
-              </mat-form-field>
-            </div>
+            <mat-form-field>
+              <mat-label>Topic</mat-label>
+              <input matInput placeholder="Ex. brc/#" formControlName="topic" />
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
 
             <div class="flex items-center">
-              <button mat-raised-button color="primary" (click)="connect()">
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="mqttInfoForm.invalid || mqttInfoForm.untouched"
+              >
                 @if (connectionStatus) {Reconnect} @else {Connect}
               </button>
             </div>
@@ -78,7 +66,7 @@
       </mat-card>
     </form>
   </div>
-
+  <!-- table -->
   <div class="grow">
     <table mat-table [dataSource]="messages()">
       <ng-container matColumnDef="timestamp">

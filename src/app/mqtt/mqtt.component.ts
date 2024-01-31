@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { Subscription } from "rxjs";
 import { environment } from "src/environments/environment";
 import { MatTableModule } from "@angular/material/table";
-import { FormsModule } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
@@ -19,7 +19,7 @@ import { MqttService } from "./mqtt.service";
   imports: [
     CommonModule,
     MatTableModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -34,11 +34,13 @@ export class MqttComponent {
   public connectionStatus: boolean = false;
   public columnsToDisplay: string[] = ["timestamp", "topic", "message", "qos"];
   public messages = signal<MqttPayload[]>([{ message: "", topic: "" }]);
-  public brokerUrl = environment.brokerUrl;
-  public brokerPort = environment.brokerPort;
-  public CurrentTopic = environment.defaultTopic;
+  public mqttInfoForm = this._fb.group({
+    brokerUrl: [environment.brokerUrl, Validators.required],
+    brokerPort: [environment.brokerPort, Validators.required],
+    topic: [environment.defaultTopic, Validators.required],
+  });
 
-  constructor(private _mqttService: MqttService) {}
+  constructor(private _mqttService: MqttService, private _fb: FormBuilder) {}
 
   ngOnInit() {
     this._mqttService
@@ -48,7 +50,9 @@ export class MqttComponent {
       .subscribe("purdue-dac/#")
       .subscribe((message) => {
         this.messages.update((messages) => {
+          // add timestamp
           message.timestamp = Date.now();
+          // only return the latest 10 messages excluding retain messages
           return [message, ...messages]
             .filter((message) => !message.packet?.retain)
             .slice(0, 10);
@@ -57,7 +61,7 @@ export class MqttComponent {
   }
 
   connect() {
-    console.log(this.brokerPort);
+    console.log(this.mqttInfoForm.value);
   }
 
   ngOndestroy() {
