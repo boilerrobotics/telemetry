@@ -20,7 +20,7 @@
       </div>
     </div>
     <!-- connection form -->
-    <form [formGroup]="mqttInfoForm" (ngSubmit)="connect()">
+    <form [formGroup]="mqttInfoForm" (ngSubmit)="connectBroker()">
       <mat-card>
         <mat-card-content>
           <div class="flex flex-row flex-wrap justify-center gap-2">
@@ -51,7 +51,11 @@
               <mat-error>This field is required</mat-error>
             </mat-form-field>
 
-            <div class="flex items-center">
+            <div
+              class="flex items-center"
+              matTooltip="Please update connection information"
+              [matTooltipDisabled]="mqttInfoForm.valid && mqttInfoForm.dirty"
+            >
               <button
                 mat-raised-button
                 color="primary"

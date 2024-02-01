@@ -9,6 +9,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { MqttPayload } from "./mqtt.interface";
 import { MqttService } from "./mqtt.service";
@@ -25,12 +26,13 @@ import { MqttService } from "./mqtt.service";
     MatIconModule,
     MatCardModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
   templateUrl: "./mqtt.component.html",
   styleUrl: "./mqtt.component.css",
 })
 export class MqttComponent {
-  private _subscription!: Subscription;
+  private _subscription?: Subscription;
   public connectionStatus: boolean = false;
   public columnsToDisplay: string[] = ["timestamp", "topic", "message", "qos"];
   public messages = signal<MqttPayload[]>([{ message: "", topic: "" }]);
@@ -43,11 +45,19 @@ export class MqttComponent {
   constructor(private _mqttService: MqttService, private _fb: FormBuilder) {}
 
   ngOnInit() {
+    this.connectBroker();
+  }
+
+  connectBroker() {
+    let connectionInfo = this.mqttInfoForm.value;
+    this.connectionStatus = false;
+    // connect to the broker
     this._mqttService
-      .connect("66.253.158.154", 9001)
+      .connect(connectionInfo.brokerUrl!, connectionInfo.brokerPort!)
       .then((status) => (this.connectionStatus = status));
+    this._subscription?.unsubscribe();
     this._subscription = this._mqttService
-      .subscribe("purdue-dac/#")
+      .subscribe(connectionInfo.topic!)
       .subscribe((message) => {
         this.messages.update((messages) => {
           // add timestamp
@@ -58,13 +68,11 @@ export class MqttComponent {
             .slice(0, 10);
         });
       });
-  }
 
-  connect() {
-    console.log(this.mqttInfoForm.value);
+    this.mqttInfoForm.reset(connectionInfo);
   }
 
   ngOndestroy() {
-    this._subscription.unsubscribe();
+    this._subscription?.unsubscribe();
   }
 }
